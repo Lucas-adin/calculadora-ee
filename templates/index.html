@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Risco Ético em Saúde</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<main class="container">
+
+    <section id="inicio" class="tela-inicial">
+        <div class="icone">✚</div>
+        <p class="subtitulo">TECNOLOGIA • SAÚDE • ÉTICA</p>
+
+        <h1>Calculadora de<br><span>Risco Ético</span></h1>
+
+        <p class="descricao">
+            Avalie os principais riscos éticos relacionados ao uso
+            da inteligência artificial em sistemas de saúde.
+        </p>
+
+        <div class="informacoes">
+            <div>🔒 Privacidade dos dados</div>
+            <div>⚖️ Justiça e transparência</div>
+            <div>🩺 Supervisão humana</div>
+        </div>
+
+        <button type="button" onclick="iniciarAvaliacao()">
+            Começar avaliação →
+        </button>
+
+        <p class="aviso">
+            Ferramenta de apoio à avaliação ética. Não substitui
+            a análise de profissionais especializados.
+        </p>
+    </section>
+
+    
+<!-- QUESTIONÁRIO -->
+<section id="avaliacao" class="card" hidden>
+
+    <h2>Avaliação de Risco Ético</h2>
+
+    <p class="descricao">
+        Responda às perguntas abaixo para avaliar o risco ético
+        do sistema de Inteligência Artificial na saúde.
+    </p>
+
+    <form action="/calcular" method="POST">
+
+        <div class="pergunta">
+            <label for="dados">1. Uso de dados sensíveis</label>
+            <select id="dados" name="dados" required>
+                <option value="" disabled selected>Selecione uma resposta</option>
+                <option value="10">Não</option>
+                <option value="5">Parcial</option>
+                <option value="0">Sim</option>
+            </select>
+        </div>
+
+        <div class="pergunta">
+            <label for="transparencia">2. Transparência da IA</label>
+            <select id="transparencia" name="transparencia" required>
+                <option value="" disabled selected>Selecione uma resposta</option>
+                <option value="10">Não</option>
+                <option value="5">Parcial</option>
+                <option value="0">Sim</option>
+            </select>
+        </div>
+
+        <div class="pergunta">
+            <label for="vies">3. Teste contra vieses</label>
+            <select id="vies" name="vies" required>
+                <option value="" disabled selected>Selecione uma resposta</option>
+                <option value="10">Não</option>
+                <option value="5">Parcial</option>
+                <option value="0">Sim</option>
+            </select>
+        </div>
+
+        <div class="pergunta">
+            <label for="seguranca">4. Segurança dos dados</label>
+            <select id="seguranca" name="seguranca" required>
+                <option value="" disabled selected>Selecione uma resposta</option>
+                <option value="10">Não</option>
+                <option value="5">Parcial</option>
+                <option value="0">Sim</option>
+            </select>
+        </div>
+
+        <div class="pergunta">
+            <label for="supervisao">5. Supervisão humana</label>
+            <select id="supervisao" name="supervisao" required>
+                <option value="" disabled selected>Selecione uma resposta</option>
+                <option value="10">Não</option>
+                <option value="5">Parcial</option>
+                <option value="0">Sim</option>
+            </select>
+        </div>
+
+        <button type="submit">Calcular risco ético</button>
+
+    </form>
+
+    <button
+        type="button"
+        class="botao-secundario"
+        onclick="voltarInicio()">
+        Voltar ao início
+    </button>
+
+</section>
+
+
+    {% if resultado is defined %}
+    <section class="resultado">
+        <p class="subtitulo">RESULTADO DA AVALIAÇÃO</p>
+        <h2>Seu resultado</h2>
+
+        <div class="pontuacao">{{ resultado }} <small>/ 25 pontos</small></div>
+
+        <p class="nivel">Nível de risco: <strong>{{ nivel }}</strong></p>
+        <p>{{ recomendacao }}</p>
+
+        <p class="aviso">
+            Este resultado é uma estimativa inicial, baseada nas respostas.
+            Não representa uma certificação de segurança ou conformidade.
+        </p>
+
+        <a class="link-botao" href="/">Nova avaliação</a>
+    </section>
+    {% endif %}
+
+    <footer>
+        Projeto acadêmico • Calculadora de Risco Ético em Sistemas de Saúde com IA
+    </footer>
+
+</main>
+
+<script>
+    function iniciarAvaliacao() {
+        document.getElementById("inicio").hidden = true;
+        document.getElementById("avaliacao").hidden = false;
+        window.scrollTo(0, 0);
+    }
+
+    function voltarInicio() {
+        document.getElementById("avaliacao").hidden = true;
+        document.getElementById("inicio").hidden = false;
+        window.scrollTo(0, 0);
+    }
+</script>
+
+</body>
+</html>
+
