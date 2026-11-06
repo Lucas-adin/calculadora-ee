@@ -4,52 +4,60 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 
-@app.route("/")
-def home():
-    return render_template("index.html")
+@app.route('/')
+def inicio():
+    return render_template('index.html', resultado=None)
 
 
-@app.route("/calcular", methods=["POST"])
+@app.route('/calcular', methods=['POST'])
 def calcular():
-    dados = int(request.form["dados"])
-    transparencia = int(request.form["transparencia"])
-    vies = int(request.form["vies"])
-    seguranca = int(request.form["seguranca"])
-    supervisao = int(request.form["supervisao"])
+    perguntas = [
+        'dados',
+        'transparencia',
+        'vies',
+        'seguranca',
+        'supervisao'
+    ]
 
-    total = dados + transparencia + vies + seguranca + supervisao
+    pontuacao_respostas = {
+        'nao': 2,
+        'parcial': 1,
+        'sim': 0
+    }
 
-    if total <= 0:
-        nivel = "BAIXO"
-        recomendacao = (
-            "O risco identificado é baixo. "
-            "Mantenha os cuidados com privacidade, "
-            "segurança e supervisão humana."
-        )
+    total = 0
+
+    for pergunta in perguntas:
+        resposta = request.form.get(pergunta)
+
+        if resposta not in pontuacao_respostas:
+            return "Responda todas as perguntas corretamente.", 400
+
+        total += pontuacao_respostas[resposta]
+
+    if total <= 3:
+        nivel = "Baixo"
+        mensagem = "O sistema apresenta baixo risco ético."
+        recomendacao = "Continue monitorando os critérios éticos da IA."
 
     elif total <= 6:
-        nivel = "MÉDIO"
-        recomendacao = (
-            "Revise os pontos que precisam de melhoria. "
-            "Reforce a proteção dos dados, a transparência "
-            "e a verificação de possíveis vieses."
-        )
+        nivel = "Médio"
+        mensagem = "O sistema apresenta risco ético moderado."
+        recomendacao = "Revise os critérios que precisam de melhorias."
 
     else:
-        nivel = "ALTO"
-        recomendacao = (
-            "O sistema exige uma revisão cuidadosa antes "
-            "de ser utilizado. Avalie os riscos, reforce "
-            "a segurança e garanta supervisão humana."
-        )
+        nivel = "Alto"
+        mensagem = "O sistema apresenta alto risco ético."
+        recomendacao = "Priorize a correção dos problemas identificados e realize uma nova avaliação."
 
     return render_template(
-        "index.html",
+        'index.html',
         resultado=total,
         nivel=nivel,
+        mensagem=mensagem,
         recomendacao=recomendacao
     )
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

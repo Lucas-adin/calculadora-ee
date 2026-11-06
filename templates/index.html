@@ -11,7 +11,8 @@
 
 <main class="container">
 
-    <section id="inicio" class="tela-inicial">
+    <!-- TELA INICIAL -->
+    <section id="inicio" class="tela-inicial" {% if resultado is not none %}hidden{% endif %}>
         <div class="icone">✚</div>
         <p class="subtitulo">TECNOLOGIA • SAÚDE • ÉTICA</p>
 
@@ -38,100 +39,96 @@
         </p>
     </section>
 
-    
-<!-- QUESTIONÁRIO -->
-<section id="avaliacao" class="card" hidden>
+    <!-- QUESTIONÁRIO -->
+    <section id="avaliacao" class="card" hidden>
 
-    <h2>Avaliação de Risco Ético</h2>
+        <h2>Avaliação de Risco Ético</h2>
 
-    <p class="descricao">
-        Responda às perguntas abaixo para avaliar o risco ético
-        do sistema de Inteligência Artificial na saúde.
-    </p>
-
-    <form action="/calcular" method="POST">
-
-        <div class="pergunta">
-            <label for="dados">1. Uso de dados sensíveis</label>
-            <select id="dados" name="dados" required>
-                <option value="" disabled selected>Selecione uma resposta</option>
-                <option value="10">Não</option>
-                <option value="5">Parcial</option>
-                <option value="0">Sim</option>
-            </select>
-        </div>
-
-        <div class="pergunta">
-            <label for="transparencia">2. Transparência da IA</label>
-            <select id="transparencia" name="transparencia" required>
-                <option value="" disabled selected>Selecione uma resposta</option>
-                <option value="10">Não</option>
-                <option value="5">Parcial</option>
-                <option value="0">Sim</option>
-            </select>
-        </div>
-
-        <div class="pergunta">
-            <label for="vies">3. Teste contra vieses</label>
-            <select id="vies" name="vies" required>
-                <option value="" disabled selected>Selecione uma resposta</option>
-                <option value="10">Não</option>
-                <option value="5">Parcial</option>
-                <option value="0">Sim</option>
-            </select>
-        </div>
-
-        <div class="pergunta">
-            <label for="seguranca">4. Segurança dos dados</label>
-            <select id="seguranca" name="seguranca" required>
-                <option value="" disabled selected>Selecione uma resposta</option>
-                <option value="10">Não</option>
-                <option value="5">Parcial</option>
-                <option value="0">Sim</option>
-            </select>
-        </div>
-
-        <div class="pergunta">
-            <label for="supervisao">5. Supervisão humana</label>
-            <select id="supervisao" name="supervisao" required>
-                <option value="" disabled selected>Selecione uma resposta</option>
-                <option value="10">Não</option>
-                <option value="5">Parcial</option>
-                <option value="0">Sim</option>
-            </select>
-        </div>
-
-        <button type="submit">Calcular risco ético</button>
-
-    </form>
-
-    <button
-        type="button"
-        class="botao-secundario"
-        onclick="voltarInicio()">
-        Voltar ao início
-    </button>
-
-</section>
-
-
-    {% if resultado is defined %}
-    <section class="resultado">
-        <p class="subtitulo">RESULTADO DA AVALIAÇÃO</p>
-        <h2>Seu resultado</h2>
-
-        <div class="pontuacao">{{ resultado }} <small>/ 25 pontos</small></div>
-
-        <p class="nivel">Nível de risco: <strong>{{ nivel }}</strong></p>
-        <p>{{ recomendacao }}</p>
-
-        <p class="aviso">
-            Este resultado é uma estimativa inicial, baseada nas respostas.
-            Não representa uma certificação de segurança ou conformidade.
+        <p class="descricao">
+            Responda às cinco perguntas para avaliar o risco ético
+            do sistema de Inteligência Artificial na saúde.
         </p>
 
-        <a class="link-botao" href="/">Nova avaliação</a>
+        <form action="{{ url_for('calcular') }}" method="POST">
+
+            <div class="pergunta">
+                <label for="dados">1. Uso de dados sensíveis</label>
+                <select id="dados" name="dados" required>
+                    <option value="" disabled selected>Selecione uma resposta</option>
+                    <option value="nao">Não</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <div class="pergunta">
+                <label for="transparencia">2. Transparência da IA</label>
+                <select id="transparencia" name="transparencia" required>
+                    <option value="" disabled selected>Selecione uma resposta</option>
+                    <option value="nao">Não</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <div class="pergunta">
+                <label for="vies">3. Testes contra vieses</label>
+                <select id="vies" name="vies" required>
+                    <option value="" disabled selected>Selecione uma resposta</option>
+                    <option value="nao">Não</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <div class="pergunta">
+                <label for="seguranca">4. Segurança dos dados</label>
+                <select id="seguranca" name="seguranca" required>
+                    <option value="" disabled selected>Selecione uma resposta</option>
+                    <option value="nao">Não</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <div class="pergunta">
+                <label for="supervisao">5. Supervisão humana</label>
+                <select id="supervisao" name="supervisao" required>
+                    <option value="" disabled selected>Selecione uma resposta</option>
+                    <option value="nao">Não</option>
+                    <option value="parcial">Parcial</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <button type="submit">Calcular risco ético</button>
+        </form>
+
+        <button type="button" class="botao-secundario" onclick="voltarInicio()">
+            Voltar ao início
+        </button>
+
     </section>
+
+    <!-- RESULTADO -->
+    {% if resultado is defined and resultado is not none %}
+
+    <section id="resultado" class="card resultado">
+        <h2>Resultado da Avaliação</h2>
+
+        <h1>{{ resultado }} / 10</h1>
+
+        <h3>Nível de Risco: {{ nivel }}</h3>
+
+        <p>{{ mensagem }}</p>
+
+        <p><strong>Recomendação:</strong> {{ recomendacao }}</p>
+
+        <button type="button" onclick="novaAvaliacao()">
+            Fazer nova avaliação
+        </button>
+    </section>
+
     {% endif %}
 
     <footer>
@@ -152,8 +149,14 @@
         document.getElementById("inicio").hidden = false;
         window.scrollTo(0, 0);
     }
+
+    function novaAvaliacao() {
+        window.location.href = "{{ url_for('inicio') }}";
+    }
 </script>
 
 </body>
 </html>
+
+
 
